@@ -446,3 +446,23 @@ build/
 
 # Variáveis de ambiente (Segurança)
 .env
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Segurança e Segredos
+.env
+*.pem
+*.key
+cert.pfx
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.cache/
+.sass-cache/
