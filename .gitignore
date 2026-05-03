@@ -427,3 +427,22 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Python - Arquivos compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambientes Virtuais (VENV)
+venv/
+env/
+.venv/
+ENV/
+
+# Distribuição / Pacotes
+dist/
+build/
+*.egg-info/
+
+# Variáveis de ambiente (Segurança)
+.env
