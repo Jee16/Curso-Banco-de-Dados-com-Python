@@ -466,3 +466,116 @@ yarn-error.log*
 # Cache
 .cache/
 .sass-cache/
+
+# ============================================================
+#  .gitignore — Engenharia de Dados
+#  Pipelines, infraestrutura, credenciais e dados em trânsito
+# ============================================================
+
+
+# ----- Credenciais e segredos (NUNCA commitar!) -------------
+# Esses arquivos expostos podem comprometer toda a infraestrutura
+.env                # variáveis de ambiente (senhas, tokens, strings de conexão)
+.env.*              # variantes do .env (ex: .env.prod, .env.staging)
+!.env.example       # EXCEÇÃO: arquivo de exemplo sem valores reais (versionar!)
+*.pem               # certificado ou chave privada (SSL/TLS, AWS, etc.)
+*.key               # chave privada genérica
+*.p12               # certificado PKCS#12 (chave + certificado juntos)
+*.pfx               # mesmo que .p12, extensão usada no Windows
+secrets/            # pasta de segredos e credenciais
+credentials/        # pasta de credenciais de acesso
+service_account*.json   # conta de serviço do Google Cloud (GCP)
+*_credentials.json      # credenciais de APIs e serviços em geral
+*_secret*.json          # arquivos com tokens ou segredos de APIs
+
+
+# ----- Dados (brutos, staging, processados) -----------------
+# Dados não devem ficar no Git — use um data lake ou object storage (S3, GCS)
+data/               # pasta geral de dados locais
+datalake/           # simulação local de data lake
+warehouse/          # arquivos locais de data warehouse
+
+*.csv               # tabelas separadas por vírgula
+*.tsv               # tabelas separadas por tabulação
+*.parquet           # formato colunar binário (padrão em pipelines modernos)
+*.avro              # formato de serialização do Apache Avro (muito usado com Kafka)
+*.orc               # formato colunar ORC (muito usado com Hive e Spark)
+*.json              # dados em JSON
+*.jsonl             # JSON com um registro por linha (comum em streaming)
+*.ndjson            # Newline Delimited JSON, igual ao .jsonl
+*.pickle            # objetos Python serializados
+*.pkl               # mesmo que .pickle, extensão alternativa
+*.h5                # formato HDF5 para grandes volumes de dados
+*.hdf5              # mesmo formato HDF5, extensão longa
+*.db                # banco de dados genérico local
+*.sqlite            # banco de dados SQLite local
+*.sqlite3           # SQLite versão 3, extensão alternativa
+
+
+# ----- Airflow ----------------------------------------------
+airflow/logs/       # logs das DAGs e tarefas executadas
+airflow/plugins/    # plugins locais (devem ter repositório próprio)
+airflow.db          # banco de dados SQLite interno do Airflow (metadados)
+airflow.cfg         # configuração do Airflow com dados sensíveis
+webserver_config.py # configuração do webserver (pode conter segredos)
+standalone_admin_password.txt   # senha gerada automaticamente no modo standalone
+logs/               # logs gerais de execução
+
+
+# ----- dbt --------------------------------------------------
+target/             # pasta de saída do dbt (SQL compilado e resultados)
+dbt_packages/       # dependências instaladas via dbt deps (como node_modules)
+logs/               # logs de execução do dbt
+.dbt/               # configuração local do dbt (contém profiles.yml por padrão)
+profiles.yml        # perfis de conexão com banco de dados (contém senhas!)
+
+
+# ----- Spark ------------------------------------------------
+spark-warehouse/    # tabelas criadas pelo Spark SQL localmente
+derby.log           # log do banco Derby usado pelo Spark em modo local
+metastore_db/       # metastore local do Hive usado pelo Spark
+*.jar               # bibliotecas Java/Scala compiladas
+!lib/*.jar          # EXCEÇÃO: JARs de dependências fixas na pasta lib/
+
+
+# ----- Docker e infraestrutura ------------------------------
+.docker/            # configurações locais do Docker
+docker-compose.override.yml     # overrides locais do docker-compose (específicos da máquina)
+*.tfstate           # estado atual da infraestrutura Terraform (muito sensível!)
+*.tfstate.*         # backups e versões do estado Terraform
+.terraform/         # plugins e módulos baixados pelo Terraform
+.terraform.lock.hcl # lock file do Terraform (pode ser versionado em times)
+*.tfvars            # variáveis do Terraform (geralmente contém segredos)
+!example.tfvars     # EXCEÇÃO: arquivo de exemplo sem valores reais
+
+
+# ----- Kafka, Flink, etc ------------------------------------
+kafka-logs/         # logs e dados dos tópicos Kafka armazenados localmente
+checkpoints/        # checkpoints de jobs Flink (estado intermediário do streaming)
+savepoints/         # savepoints manuais de jobs Flink (para migração e upgrade)
+
+
+# ----- Ambiente Python --------------------------------------
+.venv/              # ambiente virtual Python criado com venv
+venv/               # ambiente virtual Python (nome alternativo comum)
+env/                # ambiente virtual Python (outro nome alternativo)
+__pycache__/        # cache de bytecode Python gerado automaticamente
+*.py[cod]           # arquivos compilados Python (.pyc, .pyo, .pyd)
+*.pyo               # bytecode Python otimizado (versões antigas)
+*.egg-info/         # metadados de pacote Python
+dist/               # pacotes de distribuição gerados pelo build
+build/              # arquivos temporários de compilação
+
+
+# ----- IDEs e editores --------------------------------------
+.vscode/            # configurações do Visual Studio Code (específicas da máquina)
+.idea/              # configurações do PyCharm / IntelliJ
+*.code-workspace    # arquivo de workspace do VS Code
+.DS_Store           # metadados de pastas do macOS (arquivo oculto)
+Thumbs.db           # cache de miniaturas gerado pelo Windows Explorer
+
+
+# ----- Logs gerais ------------------------------------------
+*.log               # arquivos de log em geral
+logs/               # pasta de logs de qualquer ferramenta
+
